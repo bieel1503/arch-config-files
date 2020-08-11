@@ -1,7 +1,8 @@
 #!/bin/bash
 
-programs=("gvim" "git" "sudo" "intel-ucode")
+programs=("sudo" "intel-ucode")
 
+programs+=("efibootmgr") #For EFISTUB
 programs+=("networkmanager" "nm-connection-editor" "network-manager-applet") #Networkmanager, graphical interface and system tray
 programs+=("xorg-server" "xorg-setxkbmap" "xorg-xset" "xorg-xrandr" "xorg-xinit" "xorg-xrdb") #Xorg server and components
 programs+=("pulseaudio" "pulseaudio-alsa" "pulsemixer" "pavucontrol") #Pulseaudio, pulse for alsa, command line mixer and a graphical mixer

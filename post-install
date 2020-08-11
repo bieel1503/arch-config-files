@@ -1,1 +1,35 @@
 #!/bin/bash
+
+home="/home/bieel1503"
+xres="config-files/.Xresources"
+xinit="config-files/.xinitrc"
+nobeep="config-files/nobeep.conf"
+i3="config-files/i3/config"
+i3status="config-files/i3status/config"
+
+if [ ! -f "$home/.Xresources" ]; then
+	cp -v "$xres" "$home/.Xresources"
+fi
+
+if [ ! -f "$home/.xinitrc" ]; then
+	cp -v "$xres" "$home/.xinitrc"
+fi
+
+#Blacklist annoying beep module.
+if [ ! -f "/etc/modprobe.d/nobeep.conf" ]; then
+	cp -v "$nobeep" "/etc/modprobe.d/nobeep.conf"
+fi
+
+if [ ! -f "$home/.config/i3/config" ]; then
+	mkdir -pv "$home/.config/i3"
+	cp -v "$i3" "$home/.config/i3/config"
+fi
+
+if [ ! -f "$home/.config/i3status/config" ]; then
+	mkdir -pv "$home/.config/i3status/"
+	cp -v "$i3status" "$home/.config/i3status/config"
+fi
+
+#Add a boot entry. Where '/dev/sdX' and 'Y' are the drive and partition number where the ESP is located. This assume that you made the partitions using LABEL.
+efibootmgr --disk /dev/sdX --part Y --create --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=LABEL=linux_root rw initrd=\initramfs-linux.img initrd=\intel-ucode.img' --verbose
+echo "Boot entry created? Remember to set a boot order!"
