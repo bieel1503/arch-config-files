@@ -1,0 +1,9 @@
+UXTerm.termName: xterm-256color
+UXTerm.vt100.locale: true
+UXTerm.vt100.metaSendsEscape: true
+UXTerm.vt100.saveLines: 4096
+UXTerm.vt100.reverseVideo: true
+UXTerm.vt100.faceName: Deja Vu:size=10
+XTerm.vt100.translations: #override \n\
+    Ctrl <Key>C: copy-selection(CLIPBOARD) \n\
+    Ctrl <Key>V: insert-selection(CLIPBOARD)
