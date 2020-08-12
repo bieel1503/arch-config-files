@@ -1,23 +1,37 @@
 #!/bin/bash
 
 home="/home/bieel1503"
-xres="config-files/.Xresources"
-xinit="config-files/.xinitrc"
-nobeep="config-files/nobeep.conf"
-i3="config-files/i3/config"
-i3status="config-files/i3status/config"
+files="$PWD/config-files"
+xres="$files/.Xresources"
+xinit="$files/.xinitrc"
+nobeep="$files/nobeep.conf"
+numlock="$files/activate-numlock.conf"
+i3="$files/i3/config"
+i3status="$files/i3status/config"
+
+#Create folders that i normally use.
+for folder in "Documents" "Downloads" "Musics" "Applications"
+do
+	mkdir -v "$home/$folder"
+done
 
 if [ ! -f "$home/.Xresources" ]; then
 	cp -v "$xres" "$home/.Xresources"
 fi
 
 if [ ! -f "$home/.xinitrc" ]; then
-	cp -v "$xres" "$home/.xinitrc"
+	cp -v "$xinit" "$home/.xinitrc"
 fi
 
 #Blacklist annoying beep module.
 if [ ! -f "/etc/modprobe.d/nobeep.conf" ]; then
 	cp -v "$nobeep" "/etc/modprobe.d/nobeep.conf"
+fi
+
+#Activate numlock on getty.
+if [ ! -f "/etc/systemd/system/getty@.service.d/activate-numlock.conf" ]; then
+	mkdir -pv "/etc/systemd/system/getty@.service.d/"
+	cp -v "$numlock" "/etc/systemd/system/getty@.service.d/activate-numlock.conf"
 fi
 
 if [ ! -f "$home/.config/i3/config" ]; then
