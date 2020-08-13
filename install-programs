@@ -1,6 +1,6 @@
 #!/bin/bash
 
-programs=("sudo" "intel-ucode")
+programs=("sudo" "intel-ucode" "wget")
 
 programs+=("efibootmgr") #For EFISTUB
 programs+=("networkmanager" "nm-connection-editor" "network-manager-applet") #Networkmanager, graphical interface and system tray
