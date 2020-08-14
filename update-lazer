@@ -1,0 +1,108 @@
+#!/bin/bash
+url="https://api.github.com/repos/ppy/osu/releases/latest"
+latestFile="latest"
+urlData="$(curl -s $url)"
+Black='\033[0;30m'
+Red='\033[0;31m'
+Green='\033[0;32m'
+Yellow='\033[0;33m'
+Blue='\033[0;34m'
+Purple='\033[0;35m'
+Cyan='\033[0;36m'
+White='\033[0;37m'
+Reset='\033[0m'
+function getData(){
+	echo "$(echo $urlData | jq -r .$1)"
+}
+
+assets=$(getData assets)
+
+if [ "$assets" == "" ] || [ "$assets" == "null" ]; then
+	echo "$output"
+	exit
+fi
+
+function getAsset(){
+	echo "$(echo $assets | jq .[$1])"
+}
+
+function getAssetData(){
+	echo "$(echo $1 | jq -r .$2)"
+}
+
+version_=$(getData name)
+htmlUrl_=$(getData html_url)
+
+if [ -f $latestFile ]; then
+	source $latestFile
+	if [ "$version" == "$version_" ]; then
+		echo  "Up to date! version: $version"
+		exit
+	fi
+	oldVersion=true
+fi
+
+createdAt_=$(getData created_at)
+publishedAt_=$(getData published_at)
+body_=$(getData body)
+
+echo -e "${Green}Found osu!lazer version: ${Yellow}$version_"
+echo -e "${Green}URL: ${Yellow}$htmlUrl_"
+sleep 1
+
+index=0
+while true
+do
+	asset="$(getAsset $index)"
+	assetName=$(getAssetData "$asset" "name")
+	if [[ "$assetName" =~ "AppImage" ]]
+	then
+		assetUrl=$(getAssetData "$asset" "browser_download_url")
+		echo -e "${Green}Found a new AppImage..."
+		break
+	elif [ "$asset" == "null" ]; then
+		break
+	fi
+	((index++))
+done
+
+if [ "$assetName" == "" ] || [ "$assetName" == "null" ]; then
+	echo -e "${Red}A 'null' assetName."
+	echo -e "${Red}Assets: $assets${Reset}"
+	exit
+fi
+
+asset_Url_=$(getAssetData "$asset" "browser_download_url")
+asset_Created_At_=$(getAssetData "$asset" "created_at")
+
+sleep 1
+echo -e "${Green}Starting download...${Reset}"
+
+wget -q --show-progress "$assetUrl"
+
+echo -e "${Green}Download completed."
+sleep 1
+echo -e "${Green}Chmoding it..."
+chmod +x "$assetName"
+sleep 1
+
+if [ $oldVersion ]; then
+	rename "osu-lazer" "osu-lazer-$version" "osu-lazer"
+	mv "osu-lazer-$version" "tmp"
+	echo -e "${Green}Old appimage renamed to '${Yellow}osu-lazer-$version${Green}' and moved to '${Yellow}/tmp${Green}'."
+	sleep 1
+fi
+
+rename "$assetName" "osu-lazer" "$assetName"
+echo -e "${Green}Renamed new appimage to just '${Yellow}osu-lazer${Green}'.${Reset}"
+
+echo "version=\"$version_"\" > latest
+echo "htmlUrl=\"$htmlUrl_"\" >> latest
+echo "createdAt=\"$createdAt_"\" >> latest
+echo "publishedAt=\"$publishedAt_"\" >> latest
+echo "asset_Name=\"$assetName"\" >> latest
+echo "asset_Url=\"$asset_Url_"\" >> latest
+echo "asset_Created_At=\"$asset_Created_At_"\" >> latest
+echo "body=\"$body_\"" >> latest
+echo "timestamp=\"$(date '+%Y-%m-%d %A %H:%M:%S')\"" >> latest
+sleep 1
