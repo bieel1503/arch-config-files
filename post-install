@@ -44,6 +44,9 @@ if [ ! -f "$home/.config/i3status/config" ]; then
 	cp -v "$i3status" "$home/.config/i3status/config"
 fi
 
+#Enable networkmanager daemon
+systemctl enable NetworkManager.service
+
 #Add a boot entry. Where '/dev/sdX' and 'Y' are the drive and partition number where the ESP is located. This assume that you made the partitions using LABEL.
 efibootmgr --disk /dev/sdX --part Y --create --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=LABEL=linux_root rw initrd=\initramfs-linux.img initrd=\intel-ucode.img' --verbose
 echo "Boot entry created? Remember to set a boot order!"
