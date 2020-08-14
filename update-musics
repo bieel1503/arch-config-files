@@ -1,0 +1,21 @@
+#!/bin/bash
+read -p 'playlist: ' playlist
+playlistname=''
+
+if [ "$playlist" == "relax musics" ] || [ "$playlist" == "relax" ] || [ "$playlist" == "r" ];
+then
+    playlist="https://music.youtube.com/playlist?list=PLdvNM81SQijyvX3RuVyxhwS39XZTGbG8n"
+    playlistname="relax musics"
+elif [ "$playlist" == "wubwub musics" ] || [ "$playlist" == "wub" ] || [ "$playlist" == "w" ];
+then
+    playlist="https://music.youtube.com/playlist?list=PLdvNM81SQijwcTF4aD2ZuLxpq8tn2GZxY"
+    playlistname="wubwub musics"
+else
+    playlist=""
+    echo "Não tem essa playlist..."
+fi
+
+if [ ! -z "$playlist" ];
+then
+    youtube-dl --download-archive '$PWD/archive.txt' -i -f 'bestaudio' -o '$PWD/%(playlist)s/%(title)s.%(ext)s' -x --add-metadata --audio-format 'mp3' --audio-quality '0' --postprocessor-args "-metadata album='$playlistname'" $playlist
+fi
