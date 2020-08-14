@@ -96,6 +96,12 @@ fi
 rename "$assetName" "osu-lazer" "$assetName"
 echo -e "${Green}Renamed new appimage to just '${Yellow}osu-lazer${Green}'.${Reset}"
 
+dmenuFile="$PWD/.cache/dmenu_run"
+#Delete dmenu cache to force recache
+if [ -f "$dmenuFile" ]; then
+	rm "$dmenuFile"
+fi
+
 echo "version=\"$version_"\" > latest
 echo "htmlUrl=\"$htmlUrl_"\" >> latest
 echo "createdAt=\"$createdAt_"\" >> latest
