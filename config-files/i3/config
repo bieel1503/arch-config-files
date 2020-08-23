@@ -69,6 +69,7 @@ for_window [class="mpv"] floating enable, resize set 1280 720
 for_window [class="Transmission-gtk"] floating enable, resize set 1328 600
 for_window [class="discord"] floating enable, resize set 1400 800
 for_window [class="Thunderbird"] floating enable, resize set 1400 800
+for_window [class="osu!"] floating enable, resize set 1280 720
 
 
 # start a terminal
