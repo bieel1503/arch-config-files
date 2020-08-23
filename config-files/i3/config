@@ -29,19 +29,30 @@ font pango:DejaVu Sans 8
 
 #Adjust main display.
 exec xrandr --output "VGA-1" --auto
-
+exec xset r rate 200 150 #Keyboard goes brrrrrr.
 
 exec --no-startup-id dunst #Start notification daemon.
 exec --no-startup-id nm-applet #Networkmanager icon tray.
 #exec --no-startup-id pasystray #PulseAudio icon tray.
+exec --no-startup-id numlockx #Enable numlock.
 
-# Use pactl to adjust volume in PulseAudio.
+#start these two, which I usually use at startup
+exec firefox
+exec thunderbird
+
 set $refresh_i3status killall -SIGUSR1 i3status
-bindcode 69 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status && notify-send -u low -t 1000 "Volume changed: $(pulsemixer --get-volume)"
-bindcode 68 exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status && notify-send -u low -t 1000 "Volume changed: $(pulsemixer --get-volume)"
-bindcode 67 exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status && notify-send -u low -t 1000 "Volume muted."
-bindcode Shift+67 exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ 0 ; exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 100% && $refresh_i3status && notify-send -u low -t 1000 "Volume reseted."
+
+# Keybinds
+# Volume binds
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status && notify-send -u low -t 1000 "Volume changed: $(pulsemixer --get-volume)"
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status && notify-send -u low -t 1000 "Volume changed: $(pulsemixer --get-volume)"
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status && notify-send -u low -t 1000 "Volume muted."
+bindsym Shift+XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ 0 ; exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 100% && $refresh_i3status && notify-send -u low -t 1000 "Volume reseted."
 #bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+#Start apps binds
+bindsym XF86Calculator exec xcalc
+bindsym XF86Mail exec thunderbird
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -50,6 +61,15 @@ floating_modifier $mod
 default_border normal 1
 default_floating_border normal 1
 hide_edge_borders both
+
+for_window [class="firefox" title="Library"] floating enable, resize set 1400 700
+for_window [class="XCalc"] floating enable, resize set 320 500
+for_window [class="Pavucontrol"] floating enable, resize set 700 500
+for_window [class="mpv"] floating enable, resize set 1280 720
+for_window [class="Transmission-gtk"] floating enable, resize set 1328 600
+for_window [class="discord"] floating enable, resize set 1400 800
+for_window [class="Thunderbird"] floating enable, resize set 1400 800
+
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
