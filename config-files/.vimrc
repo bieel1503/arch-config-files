@@ -50,8 +50,7 @@ nnoremap <C-d> <Esc>:d _<Esc>
 inoremap <C-s> <Esc>:w<Esc>
 nnoremap <C-s> <Esc>:w<Esc>
 nnoremap <C-w> <Esc>:q<Esc>
-"Paste, undo and redo with Ctrl+p, Ctrl+z and Ctrl+b
-inoremap <C-p> <Esc>p<Esc>i
+"Undo and redo with Shift+v, Ctrl+z and Ctrl+b
 inoremap <C-z> <Esc>:undo<Esc>i
 inoremap <C-b> <Esc>:redo<Esc>i
 nnoremap <C-z> <Esc>:undo<Esc>

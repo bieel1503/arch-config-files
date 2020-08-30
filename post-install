@@ -1,7 +1,10 @@
 #!/bin/bash
+path="$PWD"
+cd "$HOME"
 
-home="/home/bieel1503"
-files="config-files"
+files="$path/config-files"
+musics="$path/update-musics"
+lazer="$path/update-lazer"
 xres="$files/.Xresources"
 xinit="$files/.xinitrc"
 nobeep="$files/nobeep.conf"
@@ -9,25 +12,69 @@ numlock="$files/activate-numlock.conf"
 i3="$files/i3/config"
 i3status="$files/i3status/config"
 firewall="$files/stateful-firewall.rules"
+vimrc="$files/.vimrc"
+git="$files/.gitconfig"
+
+echo "Creating folders..."
 
 #Create folders that i normally use.
-for folder in "Documents" "Downloads" "Musics" "Applications"
+for folder in "Documents" "Downloads" "Musics" "Applications" ".vim"
 do
-	mkdir -v "$home/$folder"
+	mkdir -v "$folder"
 done
 
-if [ ! -f "$home/.Xresources" ]; then
-	cp -v "$xres" "$home/.Xresources"
+sleep 1
+echo "Moving config files..."
+
+if [ ! -f ".gitconfig" ]; then
+	cp -v "$git" "$PWD"
 fi
 
-if [ ! -f "$home/.xinitrc" ]; then
-	cp -v "$xinit" "$home/.xinitrc"
+if [ ! -f ".vimrc" ]; then
+	cp -v "$vimrc" "$PWD"
 fi
+
+if [ ! -f ".Xresources" ]; then
+	cp -v "$xres" "$PWD"
+fi
+
+if [ ! -f ".xinitrc" ]; then
+	cp -v "$xinit" "$PWD"
+fi
+
+if [ ! -f ".config/i3/config" ]; then
+	mkdir -pv ".config/i3"
+	cp -v "$i3" ".config/i3/"
+fi
+
+if [ ! -f ".config/i3status/config" ]; then
+	mkdir -pv ".config/i3status/"
+	cp -v "$i3status" ".config/i3status/"
+fi
+
+sleep 1
+echo "Moving scripts..."
+
+if [ ! -f "Applications/osu-lazer/update-lazer" ]; then
+	mkdir -pv "Applications/osu-lazer"
+	cp -v "$lazer" "Applications/osu-lazer/"
+fi
+
+if [ ! -f "Musics/update-musics" ]; then
+	cp -v "$musics" "Musics/"
+fi
+
+sleep 1
+echo "Disabling beep sound..."
 
 #Blacklist annoying beep module.
 if [ ! -f "/etc/modprobe.d/nobeep.conf" ]; then
 	cp -v "$nobeep" "/etc/modprobe.d/nobeep.conf"
 fi
+
+
+sleep 1
+echo "Enabling numlock for getty..."
 
 #Activate numlock on getty.
 if [ ! -f "/etc/systemd/system/getty@.service.d/activate-numlock.conf" ]; then
@@ -35,19 +82,15 @@ if [ ! -f "/etc/systemd/system/getty@.service.d/activate-numlock.conf" ]; then
 	cp -v "$numlock" "/etc/systemd/system/getty@.service.d/activate-numlock.conf"
 fi
 
-if [ ! -f "$home/.config/i3/config" ]; then
-	mkdir -pv "$home/.config/i3"
-	cp -v "$i3" "$home/.config/i3/config"
-fi
 
-if [ ! -f "$home/.config/i3status/config" ]; then
-	mkdir -pv "$home/.config/i3status/"
-	cp -v "$i3status" "$home/.config/i3status/config"
-fi
+sleep 1
+echo "Adding iptables rules..."
 
 #Add iptables rules
 cat $firewall > /etc/iptables/iptables.rules
 
+sleep 1
+echo "Some other configs..."
 
 #From: 'https://github.com/ChrisTitusTech/firewallsetup'
 # Drop ICMP echo-request messages sent to broadcast or multicast addresses
@@ -65,9 +108,23 @@ echo 1 > /proc/sys/net/ipv4/conf/all/rp_filter
 # Log packets with impossible source addresses
 echo 1 > /proc/sys/net/ipv4/conf/all/log_martians
 
+sleep 1
+echo "Enabling services..."
+
 #Enable networkmanager and iptables services
 systemctl enable NetworkManager.service
 systemctl enable iptables.service
+
+sleep 1
+echo "Adding Vundle to vim..."
+
+if [ ! -f ".vim/bundle/Vundle.vim" ]; then
+	mkdir -pv ".vim/bundle/"
+	git clone "https://github.com/VundleVim/Vundle.vim.git" ".vim/bundle/Vundle.vim"
+fi
+
+sleep 1
+echo "Creating boot entry..."
 
 #Add a boot entry. Where '/dev/sdX' and 'Y' are the drive and partition number where the ESP is located. This assume that you made the partitions using LABEL.
 efibootmgr --disk /dev/sdX --part Y --create --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=LABEL=linux_root ipv6.disable=1 rw initrd=\initramfs-linux.img initrd=\intel-ucode.img' --verbose
