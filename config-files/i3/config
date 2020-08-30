@@ -29,7 +29,6 @@ font pango:DejaVu Sans 8
 
 #Adjust main display.
 exec xrandr --output "VGA-1" --auto
-exec xset r rate 200 150 #Keyboard goes brrrrrr.
 
 exec --no-startup-id dunst #Start notification daemon.
 exec --no-startup-id nm-applet #Networkmanager icon tray.
@@ -70,6 +69,11 @@ for_window [class="Transmission-gtk"] floating enable, resize set 1328 600
 for_window [class="discord"] floating enable, resize set 1400 800
 for_window [class="Thunderbird"] floating enable, resize set 1400 800
 for_window [class="osu!"] floating enable, resize set 1280 720
+for_window [class="SimpleScreenRecorder"] floating enable
+for_window [class="Min"] floating enable, resize set 1280 720
+for_window [class="minecraft"] floating enable
+
+
 
 
 # start a terminal
