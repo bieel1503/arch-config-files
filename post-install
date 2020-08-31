@@ -124,6 +124,17 @@ if [ ! -f ".vim/bundle/Vundle.vim" ]; then
 fi
 
 sleep 1
+echo "Starting pikaur installation..."
+
+if [ -z "$(ls -a /bin/ | grep pikaur)" ]; then
+	git clone "https://aur.archlinux.org/pikaur.git" "Downloads/"
+	cd "Downloads/pikaur"
+	makepkg -fsri
+	cd "$PWD"
+	echo "pikaur installed! now, remember some apps: minecraft-launcher, surf, usbimager and google-chrome."
+fi
+
+sleep 1
 echo "Creating boot entry..."
 
 #Add a boot entry. Where '/dev/sdX' and 'Y' are the drive and partition number where the ESP is located. This assume that you made the partitions using LABEL.
