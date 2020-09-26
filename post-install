@@ -69,7 +69,7 @@ echo "Disabling beep sound..."
 
 #Blacklist annoying beep module.
 if [ ! -f "/etc/modprobe.d/nobeep.conf" ]; then
-	cp -v "$nobeep" "/etc/modprobe.d/nobeep.conf"
+	sudo cp -v "$nobeep" "/etc/modprobe.d/nobeep.conf"
 fi
 
 
@@ -78,8 +78,8 @@ echo "Enabling numlock for getty..."
 
 #Activate numlock on getty.
 if [ ! -f "/etc/systemd/system/getty@.service.d/activate-numlock.conf" ]; then
-	mkdir -pv "/etc/systemd/system/getty@.service.d/"
-	cp -v "$numlock" "/etc/systemd/system/getty@.service.d/activate-numlock.conf"
+	sudo mkdir -pv "/etc/systemd/system/getty@.service.d/"
+	sudo cp -v "$numlock" "/etc/systemd/system/getty@.service.d/activate-numlock.conf"
 fi
 
 
@@ -87,33 +87,33 @@ sleep 1
 echo "Adding iptables rules..."
 
 #Add iptables rules
-cat $firewall > /etc/iptables/iptables.rules
+sudo cat $firewall > /etc/iptables/iptables.rules
 
 sleep 1
 echo "Some other configs..."
 
 #From: 'https://github.com/ChrisTitusTech/firewallsetup'
 # Drop ICMP echo-request messages sent to broadcast or multicast addresses
-echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+sudo echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
 # Drop source routed packets
-echo 0 > /proc/sys/net/ipv4/conf/all/accept_source_route
+sudo echo 0 > /proc/sys/net/ipv4/conf/all/accept_source_route
 # Enable TCP SYN cookie protection from SYN floods
-echo 1 > /proc/sys/net/ipv4/tcp_syncookies
+sudo echo 1 > /proc/sys/net/ipv4/tcp_syncookies
 # Don't accept ICMP redirect messages
-echo 0 > /proc/sys/net/ipv4/conf/all/accept_redirects
+sudo echo 0 > /proc/sys/net/ipv4/conf/all/accept_redirects
 # Don't send ICMP redirect messages
-echo 0 > /proc/sys/net/ipv4/conf/all/send_redirects
+sudo echo 0 > /proc/sys/net/ipv4/conf/all/send_redirects
 # Enable source address spoofing protection
-echo 1 > /proc/sys/net/ipv4/conf/all/rp_filter
+sudo echo 1 > /proc/sys/net/ipv4/conf/all/rp_filter
 # Log packets with impossible source addresses
-echo 1 > /proc/sys/net/ipv4/conf/all/log_martians
+sudo echo 1 > /proc/sys/net/ipv4/conf/all/log_martians
 
 sleep 1
 echo "Enabling services..."
 
 #Enable networkmanager and iptables services
-systemctl enable NetworkManager.service
-systemctl enable iptables.service
+sudo systemctl enable NetworkManager.service
+sudo systemctl enable iptables.service
 
 sleep 1
 echo "Adding Vundle to vim..."
@@ -127,9 +127,11 @@ sleep 1
 echo "Starting pikaur installation..."
 
 if [ -z "$(ls -a /bin/ | grep pikaur)" ]; then
-	git clone "https://aur.archlinux.org/pikaur.git" "Downloads/"
+	git clone "https://aur.archlinux.org/pikaur.git" "Downloads/pikaur"
 	cd "Downloads/pikaur"
 	makepkg -fsri
+	cd ..
+	rm -rdv "pikaur/"
 	cd "$PWD"
 	echo "pikaur installed! now, remember some apps: minecraft-launcher, surf, usbimager and google-chrome."
 fi

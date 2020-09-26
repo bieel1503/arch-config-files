@@ -4,8 +4,8 @@ programs=("sudo" "intel-ucode" "wget")
 
 programs+=("efibootmgr") #For EFISTUB
 programs+=("networkmanager" "nm-connection-editor" "network-manager-applet") #Networkmanager, graphical interface and system tray
-programs+=("xorg-server" "xorg-setxkbmap" "xorg-xset" "xorg-xrandr" "xorg-xinit" "xorg-xrdb" "xorg-xcalc" "xorg-xprop") #Xorg server and components
-programs+=("alsa-utils" "pulseaudio" "pulseaudio-alsa" "pulsemixer" "pavucontrol") #Pulseaudio, pulse for alsa, command line mixer and a graphical mixer
+programs+=("xorg-server" "xorg-setxkbmap" "xorg-xset" "xorg-xrandr" "xorg-xinit" "xorg-xrdb" "xorg-xcalc" "xorg-xprop" "xorg-xinput") #Xorg server and components
+programs+=("alsa-utils" "pulseaudio" "pulseaudio-alsa" "pulsemixer" "pavucontrol" "pamixer") #Pulseaudio, pulse for alsa, command line mixer and a graphical mixer
 programs+=("xterm") #xterm Terminal
 programs+=("screenfetch") #Display system information
 programs+=("firefox") #Firefox browser
