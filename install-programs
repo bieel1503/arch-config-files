@@ -1,16 +1,14 @@
 #!/bin/bash
 
-programs=("sudo" "intel-ucode" "wget")
+programs=("intel-ucode" "wget")
 
 programs+=("efibootmgr") #For EFISTUB
 programs+=("networkmanager" "nm-connection-editor" "network-manager-applet") #Networkmanager, graphical interface and system tray
 programs+=("xorg-server" "xorg-setxkbmap" "xorg-xset" "xorg-xrandr" "xorg-xinit" "xorg-xrdb" "xorg-xcalc" "xorg-xprop" "xorg-xinput") #Xorg server and components
-programs+=("alsa-utils" "pulseaudio" "pulseaudio-alsa" "pulsemixer" "pavucontrol" "pamixer") #Pulseaudio, pulse for alsa, command line mixer and a graphical mixer
-programs+=("xterm") #xterm Terminal
+programs+=("alsa-utils" "pulseaudio" "pulseaudio-alsa" "pavucontrol" "pamixer") #Pulseaudio, pulse for alsa, command line mixer and a graphical mixer
 programs+=("screenfetch") #Display system information
 programs+=("firefox") #Firefox browser
 programs+=("numlockx") #For numlock activation on X startup
-programs+=("i3-wm" "i3-status") #i3 as window manager
 programs+=("jq") #A JSON utility
 programs+=("mpv") #MPV as multimidia player
 programs+=("discord")
@@ -18,17 +16,15 @@ programs+=("flameshot") #Screenshooter
 programs+=("simplescreenrecorder") #Screen recorder
 programs+=("ttf-dejavu" "noto-fonts" "noto-fonts-emoji" "adobe-source-han-sans-otc-fonts" "adobe-source-code-pro-fonts") #Fonts
 programs+=("imv") #Image viewer
-programs+=("zip" "unrar" "tar" "unzip" "gzip") #For handling archives
+programs+=("zip" "unrar" "tar" "unzip" "gzip" "p7zip") #For handling archives
 programs+=("transmission-gtk") #Torrent client
 programs+=("thunderbird") #Email client
 programs+=("cmus") #A command line music player
-programs+=("jre-openjdk" "jdk-openjdk" "maven") #Java OpenJDK and Maven
 programs+=("youtube-dl") #For downloading youtube videos and other sites
 programs+=("man-db") #Commands manual
 programs+=("ntfs-3g") #Handling NTFS filesystems
 programs+=("lm_sensors") #Sensors command
 programs+=("dunst") #Desktop notifications
-programs+=("dmenu") #Lightweight program menu for X
 
 
 

@@ -1,0 +1,72 @@
+#!/bin/bash
+path="$PWD"
+cd "$HOME"
+
+files="$path/config-files"
+nobeep="$files/nobeep.conf"
+numlock="$files/activate-numlock.conf"
+firewall="$files/stateful-firewall.rules"
+mouse="$files/50-mouse-acceleration.conf"
+
+echo "Disabling beep sound..."
+
+#Blacklist annoying beep module.
+if [ ! -f "/etc/modprobe.d/nobeep.conf" ]; then
+	cp -v "$nobeep" "/etc/modprobe.d/nobeep.conf"
+fi
+
+sleep 1
+echo "Enabling numlock for getty..."
+
+#Activate numlock on getty.
+if [ ! -f "/etc/systemd/system/getty@.service.d/activate-numlock.conf" ]; then
+	mkdir -pv "/etc/systemd/system/getty@.service.d/"
+	cp -v "$numlock" "/etc/systemd/system/getty@.service.d/activate-numlock.conf"
+fi
+
+sleep 1
+echo "Setting mouse acceleration..."
+
+if [ ! -f "/etc/X11/xorg.conf.d/50-mouse-acceleration.conf" ]; then
+	mkdir -pv "/etc/X11/xorg.conf.d/"
+	cp -v "$mouse" "/etc/X11/xorg.conf.d/50-mouse-acceleration.conf"
+fi
+
+
+sleep 1
+echo "Adding iptables rules..."
+
+#Add iptables rules
+cat $firewall > /etc/iptables/iptables.rules
+
+sleep 1
+echo "Some other configs..."
+
+#From: 'https://github.com/ChrisTitusTech/firewallsetup'
+# Drop ICMP echo-request messages sent to broadcast or multicast addresses
+echo 1 > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts
+# Drop source routed packets
+echo 0 > /proc/sys/net/ipv4/conf/all/accept_source_route
+# Enable TCP SYN cookie protection from SYN floods
+echo 1 > /proc/sys/net/ipv4/tcp_syncookies
+# Don't accept ICMP redirect messages
+echo 0 > /proc/sys/net/ipv4/conf/all/accept_redirects
+# Don't send ICMP redirect messages
+echo 0 > /proc/sys/net/ipv4/conf/all/send_redirects
+# Enable source address spoofing protection
+echo 1 > /proc/sys/net/ipv4/conf/all/rp_filter
+# Log packets with impossible source addresses
+echo 1 > /proc/sys/net/ipv4/conf/all/log_martians
+
+sleep 1
+echo "Enabling services..."
+
+#Enable iptables service
+systemctl enable iptables.service
+
+sleep 1
+echo "Creating boot entry..."
+
+#Add a boot entry. Where '/dev/sdX' and 'Y' are the drive and partition number where the ESP is located. This assume that you made the partitions using LABEL.
+efibootmgr --disk /dev/sdX --part Y --create --label "Arch Linux" --loader /vmlinuz-linux --unicode 'root=LABEL=linux_root ipv6.disable=1 rw initrd=\initramfs-linux.img initrd=\intel-ucode.img' --verbose
+echo "Boot entry created? Remember to set a boot order!"
