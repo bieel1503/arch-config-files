@@ -6,8 +6,9 @@ files="$path/config-files"
 musics="$path/update-musics"
 lazer="$path/update-lazer"
 xinit="$files/.xinitrc"
-imrc="$files/.vimrc"
+vimrc="$files/.vimrc"
 git="$files/.gitconfig"
+dunst="$files/dunstrc"
 
 echo "Creating folders..."
 
@@ -27,8 +28,14 @@ fi
 if [ ! -f ".vimrc" ]; then
 	cp -v "$vimrc" "$PWD"
 fi
+
 if [ ! -f ".xinitrc" ]; then
 	cp -v "$xinit" "$PWD"
+fi
+
+if [ ! -f ".config/dunst/dunstrc" ]; then
+	mkdir -v ".config/dunst"
+	cp -v "$dunst" ".config/dunst/"
 fi
 
 sleep 1
