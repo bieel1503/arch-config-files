@@ -34,7 +34,7 @@ if [ ! -f ".xinitrc" ]; then
 fi
 
 if [ ! -f ".config/dunst/dunstrc" ]; then
-	mkdir -v ".config/dunst"
+	mkdir -pv ".config/dunst"
 	cp -v "$dunst" ".config/dunst/"
 fi
 
@@ -66,7 +66,7 @@ if [ -z "$(ls -a /bin/ | grep pikaur)" ]; then
 	cd "Downloads/pikaur"
 	makepkg -fsri
 	cd ..
-	rm -rdv "pikaur/"
+	rm -rdvf "pikaur/"
 	cd "$PWD"
 	echo "pikaur installed! now, remember some apps: minecraft-launcher, surf, usbimager and google-chrome."
 fi

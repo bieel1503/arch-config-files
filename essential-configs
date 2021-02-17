@@ -7,6 +7,7 @@ nobeep="$files/nobeep.conf"
 numlock="$files/activate-numlock.conf"
 firewall="$files/stateful-firewall.rules"
 mouse="$files/50-mouse-acceleration.conf"
+touchpad="$files/30-touchpad.conf"
 
 echo "Disabling beep sound..."
 
@@ -31,6 +32,15 @@ if [ ! -f "/etc/X11/xorg.conf.d/50-mouse-acceleration.conf" ]; then
 	mkdir -pv "/etc/X11/xorg.conf.d/"
 	cp -v "$mouse" "/etc/X11/xorg.conf.d/50-mouse-acceleration.conf"
 fi
+
+sleep 1
+echo "Setting touchpad..."
+
+if [ ! -f "/etc/X11/xorg.conf.d/30-touchpad.conf" ]; then
+	mkdir -pv "/etc/X11/xorg.conf.d/"
+	cp -v "$touchpad" "/etc/X11/xorg.conf.d/30-touchpad.conf"
+fi
+
 
 
 sleep 1
