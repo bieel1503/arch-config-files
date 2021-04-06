@@ -8,7 +8,7 @@ numlock="$files/activate-numlock.conf"
 firewall="$files/stateful-firewall.rules"
 mouse="$files/50-mouse-acceleration.conf"
 touchpad="$files/30-touchpad.conf"
-
+sysctl="$files/99-sysctl.conf"
 echo "Disabling beep sound..."
 
 #Blacklist annoying beep module.
@@ -41,7 +41,13 @@ if [ ! -f "/etc/X11/xorg.conf.d/30-touchpad.conf" ]; then
 	cp -v "$touchpad" "/etc/X11/xorg.conf.d/30-touchpad.conf"
 fi
 
+sleep 1
+echo "Moving sysctl..."
 
+if [ ! -f "/etc/sysctl.d/99-sysctl.conf" ]; then
+	mkdir -pv "/etc/sysctl.d/"
+	cp -v "$sysctl" "/etc/sysctl.d/"
+fi
 
 sleep 1
 echo "Adding iptables rules..."
