@@ -25,6 +25,7 @@ programs+=("man-db") #Commands manual
 programs+=("ntfs-3g") #Handling NTFS filesystems
 programs+=("lm_sensors") #Sensors command
 programs+=("dunst") #Desktop notifications
+programs+=("htop")
 
 
 
