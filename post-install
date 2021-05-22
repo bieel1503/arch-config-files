@@ -6,14 +6,13 @@ files="$path/config-files"
 musics="$path/update-musics"
 lazer="$path/update-lazer"
 xinit="$files/.xinitrc"
-vimrc="$files/.vimrc"
 git="$files/.gitconfig"
 dunst="$files/dunstrc"
 
 echo "Creating folders..."
 
-#Create folders that i normally use.
-for folder in "Documents" "Downloads" "Musics" "Applications" ".vim"
+#Create folders that I normally use.
+for folder in "Documents" "Downloads" "Musics"
 do
 	mkdir -v "$folder"
 done
@@ -23,10 +22,6 @@ echo "Moving config files..."
 
 if [ ! -f ".gitconfig" ]; then
 	cp -v "$git" "$PWD"
-fi
-
-if [ ! -f ".vimrc" ]; then
-	cp -v "$vimrc" "$PWD"
 fi
 
 if [ ! -f ".xinitrc" ]; then
@@ -48,14 +43,6 @@ fi
 
 if [ ! -f "Musics/update-musics" ]; then
 	cp -v "$musics" "Musics/"
-fi
-
-sleep 1
-echo "Adding Vundle to vim..."
-
-if [ ! -f ".vim/bundle/Vundle.vim" ]; then
-	mkdir -pv ".vim/bundle/"
-	git clone "https://github.com/VundleVim/Vundle.vim.git" ".vim/bundle/Vundle.vim"
 fi
 
 sleep 1
