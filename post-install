@@ -8,6 +8,9 @@ lazer="$path/update-lazer"
 xinit="$files/.xinitrc"
 git="$files/.gitconfig"
 dunst="$files/dunstrc"
+nvim="$files/init.vim"
+vimplug="$files/plug.vim"
+coc="$files/coc-settings.json"
 
 echo "Creating folders..."
 
@@ -33,6 +36,12 @@ if [ ! -f ".config/dunst/dunstrc" ]; then
 	cp -v "$dunst" ".config/dunst/"
 fi
 
+if [ ! -f ".config/nvim/init.vim" ]; then
+	mkdir -pv ".config/nvim"
+	cp -v "$nvim" ".config/nvim/"
+	cp -v "$coc" ".config/nvim/"
+fi
+
 sleep 1
 echo "Moving scripts..."
 
@@ -43,6 +52,14 @@ fi
 
 if [ ! -f "Musics/update-musics" ]; then
 	cp -v "$musics" "Musics/"
+fi
+
+sleep 1
+echo "Adding vim-plug to nvim..."
+
+if [ ! -f ".local/share/nvim/site/autoload/plug.vim" ]; then
+	mkdir -pv ".local/share/nvim/site/autoload/"
+	cp -v "$vimplug" ".local/share/nvim/site/autoload/"
 fi
 
 sleep 1
